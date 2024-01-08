@@ -1,10 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace CommunityOfMars.Models
 {
-    public class AppUser
+    public class AppUser : IdentityUser
     {
-        public int AppUserId { get; set; }
-        public string? UserName { get; set; }
+
     }
 }
