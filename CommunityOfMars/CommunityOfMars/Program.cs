@@ -1,3 +1,4 @@
+using CommunityOfMars;
 using CommunityOfMars.Data;
 using CommunityOfMars.Models;
 using Microsoft.AspNetCore.Identity;
@@ -40,5 +41,11 @@ app.UseAuthentication();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<MarsDBContext>();
+    SeedData.Seed(dbContext);
+}
 
 app.Run();
