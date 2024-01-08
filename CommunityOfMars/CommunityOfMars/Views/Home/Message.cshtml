@@ -1,0 +1,49 @@
+﻿@model Message
+@{
+	ViewData["Title"] = "Message";
+}
+<div class="container-fluid">
+	<div class="row">
+		<span class="col-md-2"></span>
+		<h2 class="col-md-6">Compose Message</h2>
+	</div>
+</div>
+<br>
+<form method="post" class="container-fluid">
+	<div class="row p-2">
+		<span class="col-md-2"></span>
+		<div class="col-md-3 pe-md-2 form-floating">
+			<input type="text" asp-for="Receiver.UserName" class="form-control" placeholder="Their Name">
+			<label asp-for="Receiver.UserName" class="ms-2">To :</label>
+			<!--VS autocompletes 'for' to 'asp-for', so I just used that for convenience-->
+		</div>
+		<span class="d-md-none p-2"></span> <!--This is for spacing on smaller screens-->
+		<div class="col-md-3 ps-md-2 pe-md-1 form-floating"> <!--Keeps top 3 closer together on larger screens-->
+			<input type="text" asp-for="Sender.UserName" class="form-control" placeholder="Your Name">
+			<label asp-for="Sender.UserName" class="ms-2 ms-md-0">From :</label>
+		</div>
+		<span class="d-md-none p-2"></span> <!--This is for spacing on smaller screens-->
+		<div class="col-md-2 form-floating">
+			<input type="number" asp-for="Priority" class="form-control" placeholder="0">
+			<label asp-for="Priority" class="ms-2">Priority :</label>
+		</div>
+	</div>
+	<div class="row p-2">
+		<span class="col-md-2"></span>
+		<div class="col-md-8 form-floating">
+			<input type="text" asp-for="Title" class="form-control" placeholder="Subject">
+			<label asp-for="Title" class="ms-2">Subject :</label>
+		</div>
+	</div>
+	<div class="row p-2">
+		<span class="col-md-2"></span>
+		<div class="col-md-8 form-floating">
+			<textarea asp-for="Body" class="form-control" placeholder="Message" maxlength="500" style="height:165px"></textarea>
+			<label asp-for="Body" class="ms-2">Message :</label>
+		</div>
+	</div>
+	<div class="row p-4">
+		<span class="col-md-2"></span>
+		<input type="submit" class="col-md-8 btn btn-primary" value="Send Message">
+	</div>
+</form>

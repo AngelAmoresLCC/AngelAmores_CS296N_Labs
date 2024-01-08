@@ -1,0 +1,29 @@
+﻿@model List<Message>
+@{
+    ViewData["Title"] = "Messages";
+}
+<h2>Message board</h2>
+<br>
+<a asp-area="" asp-controller="Home" asp-action="Message">Compose Message</a>
+<br><br>
+@if (@Model != null)
+{
+    @foreach(var message in Model)
+    {
+        <hr>
+        <p>
+            <span>Message</span><br>
+            To: @message.Receiver.UserName
+            <br>
+            From: @message.Sender.UserName
+            <br>
+            Subject: @message.Title
+            <br>
+            Message: @message.Body
+            <br>
+            Date: @message.Date
+            <br>
+        </p>
+    }
+}
+<br>

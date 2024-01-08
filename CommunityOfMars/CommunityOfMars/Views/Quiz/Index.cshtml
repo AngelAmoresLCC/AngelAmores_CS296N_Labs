@@ -1,0 +1,44 @@
+﻿@model Quizzes
+
+@if (!Model.IsCompleted)
+{
+	<form method="post">
+		1. @Model.Questions[1]
+		<br>
+		<input asp-for="UserAnswers[1]">
+		<br>
+		2. @Model.Questions[2]
+		<br>
+		<input asp-for="UserAnswers[2]">
+		<br>
+		<input type="submit">
+	</form>
+}
+else
+{
+	<span>1. @Model.Questions[1]</span>
+	<br>
+	string correct1;
+	if (Model.CheckAnswers()[1])
+	{
+		correct1 = "Correct!";
+	}
+	else
+	{
+		correct1 = "Wrong, the correct answer is " + Model.Answers[1];
+	}
+	<span>@(Model.UserAnswers[1]): @correct1</span>
+	<br>
+	<span>2. @Model.Questions[2]</span>
+	<br>
+	string correct2;
+	if (Model.CheckAnswers()[2])
+	{
+		correct2 = "Correct!";
+	}
+	else
+	{
+		correct2 = "Wrong, the correct answer is " + Model.Answers[2];
+	}
+	<span>@(Model.UserAnswers[2]): @correct2</span>
+}
