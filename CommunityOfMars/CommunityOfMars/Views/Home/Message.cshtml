@@ -17,11 +17,11 @@
 			<label asp-for="Receiver.UserName" class="ms-2">To :</label>
 			<!--VS autocompletes 'for' to 'asp-for', so I just used that for convenience-->
 		</div>
-		<span class="d-md-none p-2"></span> <!--This is for spacing on smaller screens-->
+@* 		<span class="d-md-none p-2"></span> <!--This is for spacing on smaller screens-->
 		<div class="col-md-3 ps-md-2 pe-md-1 form-floating"> <!--Keeps top 3 closer together on larger screens-->
 			<input type="text" asp-for="Sender.UserName" class="form-control" placeholder="Your Name">
 			<label asp-for="Sender.UserName" class="ms-2 ms-md-0">From :</label>
-		</div>
+		</div> *@
 		<span class="d-md-none p-2"></span> <!--This is for spacing on smaller screens-->
 		<div class="col-md-2 form-floating">
 			<input type="number" asp-for="Priority" class="form-control" placeholder="0">

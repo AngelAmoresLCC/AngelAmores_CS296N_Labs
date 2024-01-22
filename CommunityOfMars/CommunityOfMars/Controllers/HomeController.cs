@@ -1,5 +1,6 @@
 ﻿using CommunityOfMars.Data;
 using CommunityOfMars.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -9,12 +10,14 @@ namespace CommunityOfMars.Controllers
     public class HomeController : Controller
     {
         //MarsDBContext context;
-        IMessagesRepository messagesRepo;
+        private IMessagesRepository messagesRepo;
+        private UserManager<AppUser> userManager;
 
-        public HomeController(IMessagesRepository m)
+        public HomeController(IMessagesRepository m, UserManager<AppUser> userMngr)
         {
             //context = c;
             messagesRepo = m;
+            userManager = userMngr;
         }
 
         public IActionResult Index(string messageId)
@@ -56,6 +59,7 @@ namespace CommunityOfMars.Controllers
         public IActionResult Message(Message message)
         {
             message.Date = DateOnly.FromDateTime(DateTime.Now);
+            message.Sender = userManager.GetUserAsync(User).Result;
             messagesRepo.StoreMessage(message);
             return RedirectToAction("Messages");
         }
