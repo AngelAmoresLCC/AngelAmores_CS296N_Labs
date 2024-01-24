@@ -13,19 +13,22 @@ namespace CommunityOfMars
             {
                 const string SECRET_PASSWORD = "Secret!123";
                 AppUser system = new AppUser { UserName = "System" };
-                var result = userManager.CreateAsync(system, SECRET_PASSWORD);
+                var result = userManager.CreateAsync(system, SECRET_PASSWORD).Result.Succeeded;
                 AppUser all = new AppUser { UserName = "All" };
-                result = userManager.CreateAsync(all, SECRET_PASSWORD);
-                Message message = new()
+                result &= userManager.CreateAsync(all, SECRET_PASSWORD).Result.Succeeded;
+                if (result)
                 {
-                    Sender = system,
-                    Receiver = all,
-                    Title = "Welcome!",
-                    Body = "Welcome to the message board! Feel free to send messages here!",
-                    Priority = 0,
-                    Date = DateOnly.Parse("11/11/1111")
-                };
-                context.Messages.Add(message);
+                    Message message = new()
+                    {
+                        Sender = system,
+                        Receiver = all,
+                        Title = "Welcome!",
+                        Body = "Welcome to the message board! Feel free to send messages here!",
+                        Priority = 0,
+                        Date = DateOnly.Parse("11/11/1111")
+                    };
+                    context.Messages.Add(message);
+                }
                 context.SaveChanges();
             }
         }

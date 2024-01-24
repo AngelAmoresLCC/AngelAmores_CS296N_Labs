@@ -11,7 +11,6 @@
 </head>
 <body>
 	@using Microsoft.AspNetCore.Identity
-	@inject SignInManager<AppUser> signInManager
 	<header>
 		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
 			<div class="container-fluid">
@@ -54,8 +53,9 @@
 						</li>
 					</ul>
 					<ul class="navbar-nav flex-grow-1">
-						@if (signInManager.IsSignedIn(User))
+						@if (User.Identity.IsAuthenticated)
 						{
+							// Signed-in user -Log Out button and username
 							<li class="nav-item">
 								<form method="post" asp-action="Logout" asp-controller="Account">
 									<input type="submit" value="Log Out" class="btn btn-outline-dark" />
