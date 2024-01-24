@@ -1,5 +1,6 @@
 ﻿using CommunityOfMars.Data;
 using CommunityOfMars.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -50,6 +51,7 @@ namespace CommunityOfMars.Controllers
             return View(messages);
         }
 
+        [Authorize]
         public IActionResult Message()
         {
             return View();
