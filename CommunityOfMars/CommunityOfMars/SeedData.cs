@@ -20,7 +20,10 @@ namespace CommunityOfMars
                 const string SECRET_PASSWORD = "P4ssw0rd!";
                 AppUser system = new AppUser { UserName = "System" };
                 var result = userManager.CreateAsync(system, SECRET_PASSWORD).Result.Succeeded;
-                _ = userManager.AddToRoleAsync(system, "Admin").Result.Succeeded;
+                if (result)
+                {
+                    _ = userManager.AddToRoleAsync(system, "Admin").Result.Succeeded;
+                }
 				AppUser all = new AppUser { UserName = "All" };
                 result &= userManager.CreateAsync(all, SECRET_PASSWORD).Result.Succeeded;
                 if (result)

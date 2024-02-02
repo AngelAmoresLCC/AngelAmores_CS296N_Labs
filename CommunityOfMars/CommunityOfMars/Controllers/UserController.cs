@@ -57,7 +57,7 @@ namespace CommunityOfMars.Controllers
 		[HttpGet]
 		public IActionResult Add()
 		{
-			return View();
+			return View("../Account/Register");
 		}
 
 		[HttpPost]
@@ -80,7 +80,7 @@ namespace CommunityOfMars.Controllers
 					}
 				}
 			}
-			return View(model);
+			return View("../Account/Register", model);
 		}
 
 		[HttpPost]
