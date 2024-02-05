@@ -11,12 +11,12 @@ namespace CommunityOfMars.Data
             dbContext = context;
         }
 
-        public Message GetMessageById(int id)
+        public async Task<Message> GetMessageById(int id)
         {
             return dbContext.Messages.Find(id);
         }
 
-        public List<Message> GetMessages()
+        public async Task<List<Message>> GetMessages()
         {
             return dbContext.Messages
                 .Include(message => message.Sender)
@@ -24,7 +24,7 @@ namespace CommunityOfMars.Data
                 .ToList();
         }
 
-        public int StoreMessage(Message message)
+        public async Task<int> StoreMessage(Message message)
         {
             dbContext.Messages.Add(message);
             //Returns number of saved objects, should be 3 for now
