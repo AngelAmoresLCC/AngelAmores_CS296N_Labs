@@ -6,17 +6,17 @@ namespace CommunityOfMars.Data
     {
         List<Message> messages = new();
 
-        public Message GetMessageById(int id)
+        public async Task<Message> GetMessageById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public List<Message> GetMessages()
+        public async Task<List<Message>> GetMessages()
         {
             throw new NotImplementedException();
         }
 
-        public int StoreMessage(Message message)
+        public async Task<int> StoreMessage(Message message)
         {
             message.MessageId = messages.Count + 1;
             messages.Add(message);
