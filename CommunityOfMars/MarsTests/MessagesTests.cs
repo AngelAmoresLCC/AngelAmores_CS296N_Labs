@@ -11,7 +11,7 @@ namespace MarsTests
         {
             //Arrange
             var repo = new FakeMessagesRepository();
-            //HomeController testController = new(repo); For now at least
+            //HomeController testController = new(repo); Commented for now at least
             Message message = new() { Sender = new AppUser { UserName = "TestS" }, Receiver = new AppUser { UserName = "TestR" },
                 Title = "Test Message", Body = "This message is for testing purposes.", Priority = 5 };
 

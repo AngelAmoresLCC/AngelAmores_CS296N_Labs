@@ -4,8 +4,8 @@ namespace CommunityOfMars.Data
 {
     public interface IMessagesRepository
     {
-        public List<Message> GetMessages();
-        public Message GetMessageById(int id);
-        public int StoreMessage(Message message);
+        public Task<List<Message>> GetMessages();
+        public Task<Message> GetMessageById(int id);
+        public Task<int> StoreMessage(Message message);
     }
 }

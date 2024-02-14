@@ -37,16 +37,16 @@ namespace CommunityOfMars.Controllers
         }
 
         //TODO: Do something with the messageId
-        public IActionResult Messages(string messageId = "")
+        public async Task<IActionResult> Messages(string messageId = "")
         {
             var messages = new List<Message>();
             if (messageId.Length > 0)
             {
-                messages.Add(messagesRepo.GetMessageById(int.Parse(messageId)));
+                messages.Add(await messagesRepo.GetMessageById(int.Parse(messageId)));
             }
             else
             {
-                messages = messagesRepo.GetMessages();
+                messages = await messagesRepo.GetMessages();
             }
             return View(messages);
         }
@@ -58,11 +58,11 @@ namespace CommunityOfMars.Controllers
         }
 
         [HttpPost]
-        public IActionResult Message(Message message)
+        public async Task<IActionResult> Message(Message message)
         {
             message.Date = DateOnly.FromDateTime(DateTime.Now);
-            message.Sender = userManager.GetUserAsync(User).Result;
-            messagesRepo.StoreMessage(message);
+            message.Sender = await userManager.GetUserAsync(User);
+            await messagesRepo.StoreMessage(message);
             return RedirectToAction("Messages");
         }
 
