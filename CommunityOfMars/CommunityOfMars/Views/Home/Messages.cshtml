@@ -23,6 +23,7 @@
             <br>
             Date: @message.Date
             <br>
+            <a class="btn btn-danger" asp-action="DeleteMessage" asp-route-messageId="@message.MessageId">Delete Message</a>
         </p>
     }
 }

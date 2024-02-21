@@ -30,5 +30,13 @@ namespace CommunityOfMars.Data
             //Returns number of saved objects, should be 3 for now
             return dbContext.SaveChanges();
         }
+
+        public int DeleteMessage(int messageId)
+        {
+            Message? message = dbContext.Messages.Find(messageId);
+            if (message is not null)
+                dbContext.Remove(message);
+            return dbContext.SaveChanges();
+        }
     }
 }

@@ -8,12 +8,12 @@ namespace CommunityOfMars.Data
 
         public async Task<Message> GetMessageById(int id)
         {
-            throw new NotImplementedException();
+            return messages[id - 1];
         }
 
         public async Task<List<Message>> GetMessages()
         {
-            throw new NotImplementedException();
+            return messages;
         }
 
         public async Task<int> StoreMessage(Message message)
@@ -21,6 +21,15 @@ namespace CommunityOfMars.Data
             message.MessageId = messages.Count + 1;
             messages.Add(message);
             return message.MessageId;
+        }
+        public int DeleteMessage(int messageId)
+        {
+            try
+            {
+                messages.RemoveAt(messageId - 1);
+            }
+            catch { Console.WriteLine("Message at specified index does not exist"); }
+            return messages.Count;
         }
     }
 }

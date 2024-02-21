@@ -11,5 +11,6 @@ namespace CommunityOfMars.Models
         public string? Title { get; set; }
         public string? Body { get; set; }
         public DateOnly Date { get; set; }
+        //public List<Reply> Replies { get; set; } = new List<Reply>();
     }
 }

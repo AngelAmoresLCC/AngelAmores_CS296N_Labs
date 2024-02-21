@@ -66,6 +66,13 @@ namespace CommunityOfMars.Controllers
             return RedirectToAction("Messages");
         }
 
+        public async Task<IActionResult> DeleteMessage(int messageId)
+        {
+            //TODO: Something if the delete fails
+            messagesRepo.DeleteMessage(messageId);
+            return RedirectToAction("Messages");
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
