@@ -57,6 +57,7 @@ namespace CommunityOfMars.Controllers
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Message(Message message)
         {
@@ -66,10 +67,28 @@ namespace CommunityOfMars.Controllers
             return RedirectToAction("Messages");
         }
 
+        [Authorize]
         public async Task<IActionResult> DeleteMessage(int messageId)
         {
             //TODO: Something if the delete fails
             messagesRepo.DeleteMessage(messageId);
+            return RedirectToAction("Messages");
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Reply(int messageId)
+        {
+            Message parentMessage = await messagesRepo.GetMessageById(messageId);
+            return View(parentMessage);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Reply(Message newReply)
+        {
+            newReply.Date = DateOnly.FromDateTime(DateTime.Now);
+            newReply.Sender = await userManager.GetUserAsync(User);
+            await messagesRepo.StoreReply(newReply);
             return RedirectToAction("Messages");
         }
 

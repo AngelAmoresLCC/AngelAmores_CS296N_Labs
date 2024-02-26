@@ -1,4 +1,6 @@
-﻿using System.Xml;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Xml;
 
 namespace CommunityOfMars.Models
 {
@@ -8,9 +10,12 @@ namespace CommunityOfMars.Models
         public AppUser? Sender { get; set; }
         public AppUser? Receiver { get; set; }
         public int Priority { get; set; }
-        public string? Title { get; set; }
+        [Required(ErrorMessage = "Message must have a Title.")]
+        public string Title { get; set; } = null!;
         public string? Body { get; set; }
         public DateOnly Date { get; set; }
-        //public List<Reply> Replies { get; set; } = new List<Reply>();
+        //public Message? Reply { get; set; }
+        public List<Message> Replies { get; set; } = new List<Message>();
+        public int Parent { get; set; }
     }
 }

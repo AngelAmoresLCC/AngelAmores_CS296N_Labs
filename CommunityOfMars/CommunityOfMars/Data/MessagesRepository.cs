@@ -13,14 +13,20 @@ namespace CommunityOfMars.Data
 
         public async Task<Message> GetMessageById(int id)
         {
-            return dbContext.Messages.Find(id);
+            return dbContext.Messages
+                .Where(m => m.MessageId == id)
+                .Include(m => m.Sender)
+                .Include(m => m.Receiver)
+                .FirstOrDefault();
         }
 
         public async Task<List<Message>> GetMessages()
         {
             return dbContext.Messages
-                .Include(message => message.Sender)
-                .Include(message => message.Receiver)
+                .Where(m => m.Parent == 0)
+                .Include(m => m.Sender)
+                .Include(m => m.Receiver)
+                .Include(m => m.Replies)
                 .ToList();
         }
 
@@ -28,6 +34,15 @@ namespace CommunityOfMars.Data
         {
             dbContext.Messages.Add(message);
             //Returns number of saved objects, should be 3 for now
+            return dbContext.SaveChanges();
+        }
+
+        public async Task<int> StoreReply(Message newReply)
+        {
+            dbContext.Messages.Add(newReply);
+            Message oldMessage = await GetMessageById(newReply.Parent);
+            oldMessage.Replies.Add(newReply);
+            dbContext.Messages.Update(oldMessage);
             return dbContext.SaveChanges();
         }
 

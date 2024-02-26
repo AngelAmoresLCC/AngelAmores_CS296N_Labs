@@ -22,6 +22,12 @@ namespace CommunityOfMars.Data
             messages.Add(message);
             return message.MessageId;
         }
+
+        public async Task<int> StoreReply(Message newReply)
+        {
+            throw new NotImplementedException();
+        }
+
         public int DeleteMessage(int messageId)
         {
             try

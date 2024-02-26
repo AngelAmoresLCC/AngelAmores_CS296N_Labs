@@ -31,6 +31,12 @@ namespace CommunityOfMars.Migrations
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date");
 
+                    b.Property<int?>("MessageId1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Parent")
+                        .HasColumnType("int");
+
                     b.Property<int>("Priority")
                         .HasColumnType("int");
 
@@ -41,9 +47,12 @@ namespace CommunityOfMars.Migrations
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("MessageId");
+
+                    b.HasIndex("MessageId1");
 
                     b.HasIndex("ReceiverId");
 
@@ -259,6 +268,10 @@ namespace CommunityOfMars.Migrations
 
             modelBuilder.Entity("CommunityOfMars.Models.Message", b =>
                 {
+                    b.HasOne("CommunityOfMars.Models.Message", null)
+                        .WithMany("Replies")
+                        .HasForeignKey("MessageId1");
+
                     b.HasOne("CommunityOfMars.Models.AppUser", "Receiver")
                         .WithMany()
                         .HasForeignKey("ReceiverId");
@@ -321,6 +334,11 @@ namespace CommunityOfMars.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CommunityOfMars.Models.Message", b =>
+                {
+                    b.Navigation("Replies");
                 });
 #pragma warning restore 612, 618
         }
