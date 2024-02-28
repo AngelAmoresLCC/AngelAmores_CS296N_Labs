@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CommunityOfMars.Migrations
 {
-    public partial class BetterReplies : Migration
+    public partial class Replies : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -212,7 +212,8 @@ namespace CommunityOfMars.Migrations
                     Body = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Date = table.Column<DateOnly>(type: "date", nullable: false),
-                    Parent = table.Column<int>(type: "int", nullable: true),
+                    Parent = table.Column<int>(type: "int", nullable: false),
+                    MessageId1 = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -228,8 +229,8 @@ namespace CommunityOfMars.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Messages_Messages_Parent",
-                        column: x => x.Parent,
+                        name: "FK_Messages_Messages_MessageId1",
+                        column: x => x.MessageId1,
                         principalTable: "Messages",
                         principalColumn: "MessageId");
                 })

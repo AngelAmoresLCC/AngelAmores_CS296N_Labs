@@ -76,9 +76,9 @@ namespace CommunityOfMars.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Reply(int messageId)
+        public async Task<IActionResult> Reply(int parentId)
         {
-            Message parentMessage = await messagesRepo.GetMessageById(messageId);
+            Message parentMessage = await messagesRepo.GetMessageById(parentId);
             return View(parentMessage);
         }
 

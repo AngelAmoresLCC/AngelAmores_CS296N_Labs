@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CommunityOfMars.Migrations
 {
     [DbContext(typeof(MarsDBContext))]
-    [Migration("20240226231709_BetterReplies")]
-    partial class BetterReplies
+    [Migration("20240228184328_Replies")]
+    partial class Replies
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

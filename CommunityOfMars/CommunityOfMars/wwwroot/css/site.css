@@ -16,3 +16,15 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.messageParent {
+    border: solid;
+    border-width: 2px;
+    border-color: black;
+}
+
+.message {
+    border: dashed;
+    border-width: 1px;
+    border-color: gray;
+}

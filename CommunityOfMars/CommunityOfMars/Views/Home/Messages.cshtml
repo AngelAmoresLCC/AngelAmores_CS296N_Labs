@@ -11,25 +11,9 @@
 {
 	@foreach (var message in Model)
 	{
-		<hr>
-		<p>
-			<span>Message</span><br>
-			To: @message.Receiver.UserName
-			<br>
-			From: @message.Sender.UserName
-			<br>
-			Subject: @message.Title
-			<br>
-			Message: @message.Body
-			<br>
-			Date: @message.Date
-			<br>
-			<a class="btn btn-primary" asp-action="Reply" asp-route-messageId="@message.MessageId">Reply</a>
-			<a class="btn btn-danger" asp-action="DeleteMessage" asp-route-messageId="@message.MessageId">Delete Message</a>
-			@foreach (var reply in message.Replies)
-			{
-				<hr>
-				<p>
+		<div class="messageParent p-4">
+		<div class="row p-2">
+			<div class="col-md-4 message">
 				<span>Message</span><br>
 				To: @message.Receiver.UserName
 				<br>
@@ -41,11 +25,77 @@
 				<br>
 				Date: @message.Date
 				<br>
-				<a class="btn btn-primary" asp-action="Reply" asp-route-messageId="@message.MessageId">Reply</a>
+				<a class="btn btn-primary" asp-action="Reply" asp-route-parentId="@message.MessageId">Reply</a>
 				<a class="btn btn-danger" asp-action="DeleteMessage" asp-route-messageId="@message.MessageId">Delete Message</a>
-				</p>
+			</div>
+		</div>
+		@foreach (var reply in message.Replies)
+		{
+			<div class="row p-2">
+				<div class="col-md-1"></div>
+				<div class="col-md-4 message">
+					<span>Message</span>
+					<br>
+					To: @reply.Receiver.UserName
+					<br>
+					From: @reply.Sender.UserName
+					<br>
+					Subject: @reply.Title
+					<br>
+					Message: @reply.Body
+					<br>
+					Date: @reply.Date
+					<br>
+					<a class="btn btn-primary" asp-action="Reply" asp-route-parentId="@reply.MessageId">Reply</a>
+					<a class="btn btn-danger" asp-action="DeleteMessage" asp-route-messageId="@reply.MessageId">Delete Reply</a>
+				</div>
+			</div>
+			@foreach (var reply2 in reply.Replies)
+			{
+				<div class="row p-2">
+					<div class="col-md-2"></div>
+					<div class="col-md-4 message">
+						<span>Message</span>
+						<br>
+						To: @reply2.Receiver.UserName
+						<br>
+						From: @reply2.Sender.UserName
+						<br>
+						Subject: @reply2.Title
+						<br>
+						Message: @reply2.Body
+						<br>
+						Date: @reply2.Date
+						<br>
+						<a class="btn btn-primary" asp-action="Reply" asp-route-parentId="@reply2.MessageId">Reply</a>
+						<a class="btn btn-danger" asp-action="DeleteMessage" asp-route-messageId="@reply2.MessageId">Delete Reply</a>
+					</div>
+				</div>
+				@foreach (var reply3 in reply2.Replies)
+				{
+					<div class="row p-2">
+						<div class="col-md-3"></div>
+						<div class="col-md-4 message">
+							<span>Message</span>
+							<br>
+							To: @reply3.Receiver.UserName
+							<br>
+							From: @reply3.Sender.UserName
+							<br>
+							Subject: @reply3.Title
+							<br>
+							Message: @reply3.Body
+							<br>
+							Date: @reply3.Date
+							<br>
+							<a class="btn btn-primary" asp-action="Reply" asp-route-parentId="@reply3.MessageId">Reply</a>
+							<a class="btn btn-danger" asp-action="DeleteMessage" asp-route-messageId="@reply3.MessageId">Delete Reply</a>
+						</div>
+					</div>
+				}
 			}
-		</p>
+		}
+		</div>
+		<br>
 	}
 }
-<br>
