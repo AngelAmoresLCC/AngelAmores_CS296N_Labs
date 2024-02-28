@@ -17,6 +17,7 @@ namespace CommunityOfMars.Data
 				.Where(m => m.MessageId == id)
 				.Include(m => m.Sender)
 				.Include(m => m.Receiver)
+				.Include(m => m.Replies)
 				.FirstOrDefault();
 		}
 
@@ -105,9 +106,12 @@ namespace CommunityOfMars.Data
 
 		public int DeleteMessage(int messageId)
 		{
-			Message? message = dbContext.Messages.Find(messageId);
+			Message? message = GetMessageById(messageId).Result;
 			if (message is not null)
-				dbContext.Remove(message);
+			{
+				message.IsDeleted = true;
+				dbContext.Messages.Update(message);
+			}
 			return dbContext.SaveChanges();
 		}
 	}
