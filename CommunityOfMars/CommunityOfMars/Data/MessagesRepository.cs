@@ -13,18 +13,18 @@ namespace CommunityOfMars.Data
 
 		public async Task<Message> GetMessageById(int id)
 		{
-			return dbContext.Messages
+			return await dbContext.Messages
 				.Where(m => m.MessageId == id)
 				.Include(m => m.Sender)
 				.Include(m => m.Receiver)
 				.Include(m => m.Replies)
-				.FirstOrDefault();
+				.FirstOrDefaultAsync() ?? new();
 		}
 
 		public async Task<List<Message>> GetMessages()
 		{
 			List<Message> ParentMessages = await dbContext.Messages
-				.Where(m => m.Parent == 0)
+				.Where(m => m.Parent == null)
 				.Include(m => m.Sender)
 				.Include(m => m.Receiver)
 				.Include(m => m.Replies)
@@ -98,7 +98,7 @@ namespace CommunityOfMars.Data
 		public async Task<int> StoreReply(Message newReply)
 		{
 			await dbContext.Messages.AddAsync(newReply);
-			Message oldMessage = await GetMessageById(newReply.Parent);
+			Message oldMessage = await GetMessageById(newReply.Parent ?? 0);
 			oldMessage.Replies.Add(newReply);
 			dbContext.Messages.Update(oldMessage);
 			return dbContext.SaveChanges();

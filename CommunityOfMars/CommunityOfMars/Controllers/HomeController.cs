@@ -63,7 +63,11 @@ namespace CommunityOfMars.Controllers
         {
             message.Date = DateOnly.FromDateTime(DateTime.Now);
             message.Sender = await userManager.GetUserAsync(User);
-            await messagesRepo.StoreMessage(message);
+            try
+            {
+                message.Receiver = await userManager.FindByNameAsync(message.Receiver.UserName);
+            } catch { }
+			await messagesRepo.StoreMessage(message);
             return RedirectToAction("Messages");
         }
 
@@ -88,6 +92,7 @@ namespace CommunityOfMars.Controllers
         {
             newReply.Date = DateOnly.FromDateTime(DateTime.Now);
             newReply.Sender = await userManager.GetUserAsync(User);
+            newReply.Receiver = await userManager.FindByNameAsync(newReply.Receiver.UserName);
             await messagesRepo.StoreReply(newReply);
             return RedirectToAction("Messages");
         }
