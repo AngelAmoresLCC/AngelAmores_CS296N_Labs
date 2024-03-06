@@ -15,6 +15,7 @@ namespace CommunityOfMars.Models
         public string? Body { get; set; }
         public DateOnly Date { get; set; }
         //public Message? Reply { get; set; }
+        [ForeignKey("Parent")]
         public List<Message> Replies { get; set; } = new List<Message>();
         public int Parent { get; set; }
         public bool IsDeleted { get; set; } = false;
