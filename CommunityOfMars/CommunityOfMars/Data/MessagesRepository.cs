@@ -17,6 +17,7 @@ namespace CommunityOfMars.Data
 				.Where(m => m.MessageId == id)
 				.Include(m => m.Sender)
 				.Include(m => m.Receiver)
+				.Include(m => m.Replies)
 				.FirstOrDefault();
 		}
 
@@ -36,12 +37,12 @@ namespace CommunityOfMars.Data
 			foreach (var m in ParentMessages)
 			{
 				if (m.Replies.Any())
-					foreach (var reply in m.Replies)
+					foreach (var reply0 in m.Replies)
 					{
-						if (reply.Replies.Any())
+						if (reply0.Replies.Any())
 						{
-							reply.Replies = await dbContext.Messages
-								.Where(m => m.Parent == reply.MessageId)
+							reply0.Replies = await dbContext.Messages
+								.Where(m => m.Parent == reply0.MessageId)
 								.Include(m => m.Sender)
 								.Include(m => m.Receiver)
 								.Include(m => m.Replies)
@@ -51,11 +52,11 @@ namespace CommunityOfMars.Data
 								.Include(m => m.Replies)
 								.ThenInclude(r => r.Replies)
 								.ToListAsync();
-							foreach (var reply2 in reply.Replies)
+							foreach (var reply1 in reply0.Replies)
 							{
-								if (reply2.Replies.Any())
-									reply2.Replies = await dbContext.Messages
-										.Where(m => m.Parent == reply2.MessageId)
+								if (reply1.Replies.Any())
+									reply1.Replies = await dbContext.Messages
+										.Where(m => m.Parent == reply1.MessageId)
 										.Include(m => m.Sender)
 										.Include(m => m.Receiver)
 										.Include(m => m.Replies)
@@ -65,7 +66,22 @@ namespace CommunityOfMars.Data
 										.Include(m => m.Replies)
 										.ThenInclude(r => r.Replies)
 										.ToListAsync();
-							}
+                                foreach (var reply2 in reply1.Replies)
+                                {
+                                    if (reply2.Replies.Any())
+                                        reply2.Replies = await dbContext.Messages
+                                            .Where(m => m.Parent == reply2.MessageId)
+                                            .Include(m => m.Sender)
+                                            .Include(m => m.Receiver)
+                                            .Include(m => m.Replies)
+                                            .ThenInclude(r => r.Sender)
+                                            .Include(m => m.Replies)
+                                            .ThenInclude(r => r.Receiver)
+                                            .Include(m => m.Replies)
+                                            .ThenInclude(r => r.Replies)
+                                            .ToListAsync();
+                                }
+                            }
 						}
 					}
 			}
@@ -74,14 +90,14 @@ namespace CommunityOfMars.Data
 
 		public async Task<int> StoreMessage(Message message)
 		{
-			dbContext.Messages.Add(message);
+			await dbContext.Messages.AddAsync(message);
 			//Returns number of saved objects, should be 3 for now
 			return dbContext.SaveChanges();
 		}
 
 		public async Task<int> StoreReply(Message newReply)
 		{
-			dbContext.Messages.Add(newReply);
+			await dbContext.Messages.AddAsync(newReply);
 			Message oldMessage = await GetMessageById(newReply.Parent);
 			oldMessage.Replies.Add(newReply);
 			dbContext.Messages.Update(oldMessage);
@@ -90,9 +106,12 @@ namespace CommunityOfMars.Data
 
 		public int DeleteMessage(int messageId)
 		{
-			Message? message = dbContext.Messages.Find(messageId);
+			Message? message = GetMessageById(messageId).Result;
 			if (message is not null)
-				dbContext.Remove(message);
+			{
+				message.IsDeleted = true;
+				dbContext.Messages.Update(message);
+			}
 			return dbContext.SaveChanges();
 		}
 	}

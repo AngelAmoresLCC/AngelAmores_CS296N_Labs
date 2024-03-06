@@ -17,5 +17,6 @@ namespace CommunityOfMars.Models
         //public Message? Reply { get; set; }
         public List<Message> Replies { get; set; } = new List<Message>();
         public int Parent { get; set; }
+        public bool IsDeleted { get; set; } = false;
     }
 }
