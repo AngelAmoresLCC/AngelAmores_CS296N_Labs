@@ -18,6 +18,7 @@ namespace CommunityOfMars.Models
         [ForeignKey("Parent")]
         public List<Message> Replies { get; set; } = new List<Message>();
         public int? Parent { get; set; }
+        public Message? ParentMessage { get; set; }
         public bool IsDeleted { get; set; } = false;
     }
 }
