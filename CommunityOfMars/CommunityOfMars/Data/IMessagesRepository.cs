@@ -7,5 +7,7 @@ namespace CommunityOfMars.Data
         public Task<List<Message>> GetMessages();
         public Task<Message> GetMessageById(int id);
         public Task<int> StoreMessage(Message message);
+        public Task<int> StoreReply(Message newReply);
+        public int DeleteMessage(int messageId);
     }
 }

@@ -57,12 +57,43 @@ namespace CommunityOfMars.Controllers
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Message(Message message)
         {
             message.Date = DateOnly.FromDateTime(DateTime.Now);
             message.Sender = await userManager.GetUserAsync(User);
-            await messagesRepo.StoreMessage(message);
+            try
+            {
+                message.Receiver = await userManager.FindByNameAsync(message.Receiver.UserName);
+            } catch { }
+			await messagesRepo.StoreMessage(message);
+            return RedirectToAction("Messages");
+        }
+
+        [Authorize]
+        public async Task<IActionResult> DeleteMessage(int messageId)
+        {
+            //TODO: Something if the delete fails
+            messagesRepo.DeleteMessage(messageId);
+            return RedirectToAction("Messages");
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Reply(int parentId)
+        {
+            Message parentMessage = await messagesRepo.GetMessageById(parentId);
+            return View(parentMessage);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Reply(Message newReply)
+        {
+            newReply.Date = DateOnly.FromDateTime(DateTime.Now);
+            newReply.Sender = await userManager.GetUserAsync(User);
+            newReply.Receiver = await userManager.FindByNameAsync(newReply.Receiver.UserName);
+            await messagesRepo.StoreReply(newReply);
             return RedirectToAction("Messages");
         }
 

@@ -1,0 +1,46 @@
+﻿@model Message
+@{
+	ViewData["Title"] = "Message";
+}
+<div class="container-fluid">
+	<div class="row">
+		<span class="col-md-2"></span>
+		<h2 class="col-md-6">Compose Message</h2>
+	</div>
+</div>
+<br>
+<form method="post" class="container-fluid">
+	<div class="row p-2">
+		<span class="col-md-2"></span>
+		<div class="col-md-3 pe-md-2">
+			<span>To: @Model.Sender.UserName</span>
+			<input type="text" name="Receiver.UserName" value="@Model.Sender.UserName" hidden="hidden">
+			<!--VS autocompletes 'for' to 'asp-for', so I just used that for convenience-->
+		</div>
+		<span class="d-md-none p-2"></span>
+		<div class="col-md-2 form-floating">
+			<input type="number" id="Priority" name="Priority" class="form-control" placeholder="0">
+			<label for="Priority" class="ms-2">Priority :</label>
+		</div>
+	</div>
+	<div class="row p-2">
+		<span class="col-md-2"></span>
+		<div class="col-md-8 form-floating">
+			<input type="text" id="Title" name="Title" class="form-control" placeholder="Subject">
+			<label for="Title" class="ms-2">Subject :</label>
+		</div>
+	</div>
+	<div class="row p-2">
+		<span class="col-md-2"></span>
+		<div class="col-md-8 form-floating">
+			<textarea id="Body" name="Body" class="form-control" placeholder="Message" maxlength="500" style="height:165px"></textarea>
+			<label for="Body" class="ms-2">Message :</label>
+		</div>
+	</div>
+	<input name="Parent" value="@Model.MessageId" hidden="hidden">
+	<input name="MessageId" value="0" hidden="hidden">
+	<div class="row p-4">
+		<span class="col-md-2"></span>
+		<input type="submit" class="col-md-8 btn btn-primary" value="Send Reply">
+	</div>
+</form>

@@ -3,6 +3,7 @@ using System;
 using CommunityOfMars.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CommunityOfMars.Migrations
 {
     [DbContext(typeof(MarsDBContext))]
-    partial class MarsDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240306225602_fix")]
+    partial class fix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -268,10 +270,9 @@ namespace CommunityOfMars.Migrations
 
             modelBuilder.Entity("CommunityOfMars.Models.Message", b =>
                 {
-                    b.HasOne("CommunityOfMars.Models.Message", "ParentMessage")
+                    b.HasOne("CommunityOfMars.Models.Message", null)
                         .WithMany("Replies")
-                        .HasForeignKey("Parent")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("Parent");
 
                     b.HasOne("CommunityOfMars.Models.AppUser", "Receiver")
                         .WithMany()
@@ -280,8 +281,6 @@ namespace CommunityOfMars.Migrations
                     b.HasOne("CommunityOfMars.Models.AppUser", "Sender")
                         .WithMany()
                         .HasForeignKey("SenderId");
-
-                    b.Navigation("ParentMessage");
 
                     b.Navigation("Receiver");
 

@@ -3,6 +3,7 @@ using System;
 using CommunityOfMars.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,13 +11,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CommunityOfMars.Migrations
 {
     [DbContext(typeof(MarsDBContext))]
-    partial class MarsDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240228184328_Replies")]
+    partial class Replies
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.27")
+                .HasAnnotation("ProductVersion", "6.0.24")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("CommunityOfMars.Models.Message", b =>
@@ -31,10 +33,10 @@ namespace CommunityOfMars.Migrations
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("tinyint(1)");
+                    b.Property<int?>("MessageId1")
+                        .HasColumnType("int");
 
-                    b.Property<int?>("Parent")
+                    b.Property<int>("Parent")
                         .HasColumnType("int");
 
                     b.Property<int>("Priority")
@@ -52,7 +54,7 @@ namespace CommunityOfMars.Migrations
 
                     b.HasKey("MessageId");
 
-                    b.HasIndex("Parent");
+                    b.HasIndex("MessageId1");
 
                     b.HasIndex("ReceiverId");
 
@@ -268,10 +270,9 @@ namespace CommunityOfMars.Migrations
 
             modelBuilder.Entity("CommunityOfMars.Models.Message", b =>
                 {
-                    b.HasOne("CommunityOfMars.Models.Message", "ParentMessage")
+                    b.HasOne("CommunityOfMars.Models.Message", null)
                         .WithMany("Replies")
-                        .HasForeignKey("Parent")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("MessageId1");
 
                     b.HasOne("CommunityOfMars.Models.AppUser", "Receiver")
                         .WithMany()
@@ -280,8 +281,6 @@ namespace CommunityOfMars.Migrations
                     b.HasOne("CommunityOfMars.Models.AppUser", "Sender")
                         .WithMany()
                         .HasForeignKey("SenderId");
-
-                    b.Navigation("ParentMessage");
 
                     b.Navigation("Receiver");
 

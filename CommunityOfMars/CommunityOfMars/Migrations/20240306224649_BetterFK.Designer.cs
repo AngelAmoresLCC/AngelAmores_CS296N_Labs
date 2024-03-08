@@ -11,14 +11,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CommunityOfMars.Migrations
 {
     [DbContext(typeof(MarsDBContext))]
-    [Migration("20240108231152_Identity")]
-    partial class Identity
+    [Migration("20240306224649_BetterFK")]
+    partial class BetterFK
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.24")
+                .HasAnnotation("ProductVersion", "6.0.27")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("CommunityOfMars.Models.Message", b =>
@@ -33,6 +33,12 @@ namespace CommunityOfMars.Migrations
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("Parent")
+                        .HasColumnType("int");
+
                     b.Property<int>("Priority")
                         .HasColumnType("int");
 
@@ -43,9 +49,12 @@ namespace CommunityOfMars.Migrations
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("MessageId");
+
+                    b.HasIndex("Parent");
 
                     b.HasIndex("ReceiverId");
 
@@ -261,6 +270,12 @@ namespace CommunityOfMars.Migrations
 
             modelBuilder.Entity("CommunityOfMars.Models.Message", b =>
                 {
+                    b.HasOne("CommunityOfMars.Models.Message", null)
+                        .WithMany("Replies")
+                        .HasForeignKey("Parent")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CommunityOfMars.Models.AppUser", "Receiver")
                         .WithMany()
                         .HasForeignKey("ReceiverId");
@@ -323,6 +338,11 @@ namespace CommunityOfMars.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CommunityOfMars.Models.Message", b =>
+                {
+                    b.Navigation("Replies");
                 });
 #pragma warning restore 612, 618
         }
