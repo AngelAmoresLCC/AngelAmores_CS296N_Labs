@@ -12,9 +12,10 @@ namespace CommunityOfMars.Models
         public int Priority { get; set; }
         [Required(ErrorMessage = "Message must have a Title.")]
         public string Title { get; set; } = null!;
+        [MinLength(1, ErrorMessage = "Message must have a body.")]
+        [MaxLength(300, ErrorMessage = "Message must be at most 300 characters.")]
         public string? Body { get; set; }
         public DateOnly Date { get; set; }
-        //public Message? Reply { get; set; }
         [ForeignKey("Parent")]
         public List<Message> Replies { get; set; } = new List<Message>();
         public int? Parent { get; set; }
